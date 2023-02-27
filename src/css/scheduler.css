@@ -20,6 +20,7 @@ td {
 tr:first-child {
   background-color: rgba(40, 40, 40, 0.2);
 }
+
 .time,
 .grid {
   display: flex;
@@ -33,10 +34,6 @@ tr:first-child {
 .time {
   font-size: 14px;
   color: gray;
-}
-
-.dot {
-  border: 1px dotted black;
 }
 
 .container {
@@ -107,7 +104,11 @@ tr:first-child {
 }
 
 .subject_info__name .delete {
-  font-size: 16px;
-  font-weight: normal;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgba(40, 40, 40, 0.3);
   cursor: pointer;
+}
+.subject_info__name .delete:hover {
+  color: rgba(40, 40, 40, 0.8);
 }
