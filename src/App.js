@@ -105,6 +105,7 @@ export default function App({ $target }) {
     $target,
     initialState: this.state.schedule,
     onDelete: (name) => {
+      if (!confirm(`${name} 과목을 삭제하시겠습니까?`)) return;
       const changedSchedule = { ...this.state.schedule };
       for (const key in changedSchedule) {
         changedSchedule[key].forEach((cur, idx) => {
