@@ -1,5 +1,4 @@
 export default function Scheduler({ $target, initialState, onDelete }) {
-  let isInitialize = true;
   const $scheduler = document.createElement("table");
   $target.appendChild($scheduler);
   this.state = initialState;
@@ -35,7 +34,6 @@ export default function Scheduler({ $target, initialState, onDelete }) {
   ) => {
     const $div = document.createElement("div");
     $target.appendChild($div);
-
     if (subjects.includes(name)) {
       $div.setAttribute("class", `subject color${subjects.indexOf(name) + 1}`);
     } else {
@@ -63,8 +61,7 @@ export default function Scheduler({ $target, initialState, onDelete }) {
   };
 
   this.render = () => {
-    if (isInitialize) {
-      $scheduler.innerHTML = `
+    $scheduler.innerHTML = `
         <tr>
           <th></th><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td>
         </tr>
@@ -104,8 +101,6 @@ export default function Scheduler({ $target, initialState, onDelete }) {
             </td>`.repeat(5)}
         </tr>
       `;
-      isInitialize = false;
-    }
     const subjects = [];
     for (const key in this.state) {
       this.state[key].map(({ name, place, start_time, end_time }) => {

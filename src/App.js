@@ -92,9 +92,32 @@ const DUMMY_DATA = {
 };
 
 export default function App({ $target }) {
-  new Scheduler({
+  this.state = {
+    schedule: DUMMY_DATA,
+  };
+  this.setState = (nextState) => {
+    this.state = nextState;
+
+    scheduler.setState(this.state.schedule);
+  };
+
+  const scheduler = new Scheduler({
     $target,
-    initialState: DUMMY_DATA,
-    onDelete: (name) => {},
+    initialState: this.state.schedule,
+    onDelete: (name) => {
+      const changedSchedule = { ...this.state.schedule };
+      for (const key in changedSchedule) {
+        changedSchedule[key].forEach((cur, idx) => {
+          if (cur.name === name) {
+            changedSchedule[key].splice(idx, 1);
+          }
+        });
+      }
+
+      this.setState({
+        ...this.state,
+        schedule: changedSchedule,
+      });
+    },
   });
 }
