@@ -1,3 +1,4 @@
+import ScheduleModal from "./components/ScheduleModal.js";
 import Scheduler from "./components/Scheduler.js";
 
 const DUMMY_DATA = {
@@ -121,4 +122,6 @@ export default function App({ $target }) {
       });
     },
   });
+
+  new ScheduleModal({ $target });
 }
