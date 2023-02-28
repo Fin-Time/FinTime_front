@@ -43,6 +43,14 @@ export default function ScheduleModal({ $target }) {
     골프연습장: [36.3716, 127.3483],
   };
 
+  const place = () => {
+    let retVal = "";
+    for (const place in placeCoordinate) {
+      retVal += `<option value=${place}>${place}</option>`;
+    }
+    return retVal;
+  };
+
   this.render = () => {
     $dialog.innerHTML = `
       <form method="dialog" style="width: 300px">
@@ -90,6 +98,7 @@ export default function ScheduleModal({ $target }) {
           </div>
           <div class="place_select">
             <select name="place_choose">
+              ${place()}
             </select>
             <input type="text" placeholder="강의실 [ ex) 410 ]" />
           </div>
