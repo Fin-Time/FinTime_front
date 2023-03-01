@@ -1,3 +1,4 @@
+import Button from "./Button.js";
 import TimePlaceSelector from "./TimePlaceSelector.js";
 
 export default function ScheduleModal({ $target }) {
@@ -55,13 +56,24 @@ export default function ScheduleModal({ $target }) {
       <label for="newSubject">과목명</label>
       <input
         type="text"
-        36.3667
-        127.3443
         placeholder="ex) 기초글쓰기"
         id="newSubject"
         required
       />
     `;
+
+    new Button({
+      $target: $form,
+      text: "+ 시간/장소 추가",
+      type: "add",
+      onClick: () => {
+        new TimePlaceSelector({
+          $target: $form,
+          num: count,
+          place,
+        });
+      },
+    });
 
     new TimePlaceSelector({
       $target: $form,
