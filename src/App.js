@@ -1,3 +1,4 @@
+import Button from "./components/Button.js";
 import ScheduleModal from "./components/ScheduleModal.js";
 import Scheduler from "./components/Scheduler.js";
 
@@ -102,6 +103,15 @@ export default function App({ $target }) {
     scheduler.setState(this.state.schedule);
   };
 
+  new Button({
+    $target,
+    text: "과목 추가",
+    type: "open_modal_box",
+    onClick: () => {
+      scheduleModal.open();
+    },
+  });
+
   const scheduler = new Scheduler({
     $target,
     initialState: this.state.schedule,
@@ -123,5 +133,9 @@ export default function App({ $target }) {
     },
   });
 
-  new ScheduleModal({ $target });
+  const scheduleModal = new ScheduleModal({
+    $target,
+    initialState: this.state.schedule,
+    onSubmit: (state) => {},
+  });
 }

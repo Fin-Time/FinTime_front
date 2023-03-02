@@ -1,14 +1,18 @@
 import Button from "./Button.js";
 import TimePlaceSelector from "./TimePlaceSelector.js";
 
-export default function ScheduleModal({ $target }) {
+export default function ScheduleModal({ $target, initialState, onSubmit }) {
   const $dialog = document.createElement("dialog");
   $target.appendChild($dialog);
-  $dialog.setAttribute("open", "true");
 
   const $form = document.createElement("form");
   $form.setAttribute("method", "dialog");
   $dialog.appendChild($form);
+
+  this.state = initialState;
+  this.setState = (nextState) => {
+    this.state = nextState;
+  };
 
   const placeCoordinate = {
     "공대 1호관": [36.367604, 127.344857],
@@ -49,7 +53,14 @@ export default function ScheduleModal({ $target }) {
     }
     return retVal;
   };
-  let count = 1;
+
+  this.open = () => {
+    $dialog.showModal();
+  };
+
+  const inputValidation = () => {};
+
+  let count = 0;
   this.render = () => {
     $form.innerHTML = `
       <h3>시간표 수업 추가</h3>
@@ -64,12 +75,42 @@ export default function ScheduleModal({ $target }) {
 
     new Button({
       $target: $form,
+      text: "취소",
+      type: "cancel",
+      onClick: () => {
+        $dialog.close();
+      },
+    });
+
+    new Button({
+      $target: $form,
+      text: "완료",
+      type: "confirm",
+      onClick: () => {
+        const newSubjectName = document.getElementById("newSubject");
+        if (newSubjectName.value === "") {
+          alert("괴목명을 입력해주세요.");
+          newSubjectName.focus();
+          return;
+        }
+        const subjectUnits = document.getElementsByClassName("timeAndPlace");
+        console.log(Array.from(subjectUnits));
+        Array.from(subjectUnits).forEach((v, idx) =>
+          console.log(v.getElementById(`place${++idx}`))
+        );
+        console.log(this.state);
+        onSubmit(this.state);
+      },
+    });
+
+    new Button({
+      $target: $form,
       text: "+ 시간/장소 추가",
       type: "add",
       onClick: () => {
         new TimePlaceSelector({
           $target: $form,
-          num: count,
+          number: ++count,
           place,
         });
       },
@@ -77,7 +118,7 @@ export default function ScheduleModal({ $target }) {
 
     new TimePlaceSelector({
       $target: $form,
-      num: count,
+      number: ++count,
       place,
     });
   };
