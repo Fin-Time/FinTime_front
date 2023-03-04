@@ -58,7 +58,74 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     $dialog.showModal();
   };
 
-  const inputValidation = () => {};
+  const getTime = (target, isStart, isHour, idx) => {
+    return target.querySelector(
+      `#time_select__${isStart ? "start" : "end"}_${
+        isHour ? "hour" : "minutes"
+      }__${idx}`
+    );
+  };
+
+  const timeValidation = (target, isStart, idx) => {
+    const checkedDay = target.querySelector(
+      `input[name="day_select__radio${idx}"]:checked`
+    ).className;
+
+    const hour = getTime(target, isStart, true, idx).value;
+    const min = getTime(target, isStart, false, idx).value;
+
+    const start = parseFloat(hour) + (min === "00" ? 0 : 0.5);
+    for (const cur of this.state[checkedDay]) {
+      const validate_startTime = parseFloat(cur["start_time"]);
+      const validate_endTime = parseFloat(cur["end_time"]);
+      for (let i = validate_startTime; i < validate_endTime; i += 0.5) {
+        if (i === start) {
+          alert("겹치는 시간이 존재합니다");
+          getTime(target, isStart, true, idx).focus();
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const inputValidation = () => {
+    // 과목명 체크
+    const newSubjectName = document.getElementById("newSubject");
+    if (newSubjectName.value === "") {
+      alert("과목명을 입력해주세요.");
+      newSubjectName.focus();
+      return;
+    }
+    const subjectUnits = document.getElementsByClassName("timeAndPlace");
+    let idx = 0;
+    for (const v of Array.from(subjectUnits)) {
+      let start = parseFloat(getTime(v, true, true, idx + 1).value);
+      start += getTime(v, true, false, idx + 1).value === "00" ? 0 : 0.5;
+      let end = parseFloat(getTime(v, false, true, idx + 1).value);
+      end += getTime(v, false, false, idx + 1).value === "00" ? 0 : 0.5;
+
+      //시간 범위 체크
+      if (start >= end) {
+        alert("올바르지 않은 시간 범위 입력입니다.");
+        getTime(v, false, true, idx + 1).focus();
+        return;
+      }
+
+      //겹치는 시간 체크
+      if (!timeValidation(v, true, idx + 1)) return;
+      if (!timeValidation(v, false, idx + 1)) return;
+
+      //강의실 체크
+      const newSubjectPlace = document.getElementById(`place${idx + 1}`);
+      if (newSubjectPlace.value === "") {
+        alert("강의실을 입력해주세요.");
+        newSubjectPlace.focus();
+        return;
+      }
+      idx++;
+    }
+  };
 
   let count = 0;
   this.render = () => {
@@ -87,18 +154,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       text: "완료",
       type: "confirm",
       onClick: () => {
-        const newSubjectName = document.getElementById("newSubject");
-        if (newSubjectName.value === "") {
-          alert("괴목명을 입력해주세요.");
-          newSubjectName.focus();
-          return;
-        }
-        const subjectUnits = document.getElementsByClassName("timeAndPlace");
-        console.log(Array.from(subjectUnits));
-        Array.from(subjectUnits).forEach((v, idx) =>
-          console.log(v.getElementById(`place${++idx}`))
-        );
-        console.log(this.state);
+        inputValidation();
         onSubmit(this.state);
       },
     });
