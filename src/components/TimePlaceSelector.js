@@ -46,6 +46,12 @@ export default function TimePlaceSelector({ $target, number, place }) {
               </select>
               <input type="text" placeholder="강의실 [ ex) 410 ]" id='place${number}' required/>
             </div>
+
+            ${
+              number > 1
+                ? `<button type="button" class="select_cell_delete_btn">삭제</button>`
+                : ""
+            }
     `;
   };
 
@@ -59,4 +65,11 @@ export default function TimePlaceSelector({ $target, number, place }) {
           document.getElementById(`time_select__start_hour__${number}`).value
         ) + 1;
     });
+
+  $div.addEventListener("click", (e) => {
+    const $deleteBtn = e.target.closest(".select_cell_delete_btn");
+    if (!$deleteBtn) return;
+    const $deleteBtnParent = $deleteBtn.closest(".timeAndPlace");
+    $deleteBtnParent.parentNode.removeChild($deleteBtnParent);
+  });
 }
