@@ -98,7 +98,7 @@ export default function App({ $target }) {
     schedule: DUMMY_DATA,
   };
   this.setState = (nextState) => {
-    this.state = nextState;
+    this.state.schedule = nextState;
 
     scheduler.setState(this.state.schedule);
   };
@@ -137,7 +137,7 @@ export default function App({ $target }) {
     $target,
     initialState: this.state.schedule,
     onSubmit: (state) => {
-      console.log(state);
+      this.setState(state);
     },
   });
 }

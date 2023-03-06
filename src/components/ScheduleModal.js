@@ -10,8 +10,13 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
   $dialog.appendChild($form);
 
   this.state = initialState;
-  this.setState = (nextState) => {
-    this.state = nextState;
+  this.setState = ({ day, name, place, start_time, end_time }) => {
+    this.state[day].push({
+      name,
+      place,
+      start_time,
+      end_time,
+    });
   };
 
   const placeCoordinate = {
@@ -161,6 +166,38 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     return true;
   };
 
+  const getInput = () => {
+    const newSubjectName = document.getElementById("newSubject").value;
+    const subjectUnits = document.getElementsByClassName("timeAndPlace");
+    for (const v of Array.from(subjectUnits)) {
+      const checkedDay = Array.from(v.getElementsByClassName("day")).filter(
+        (it) => it.checked === true
+      )[0].classList[1];
+
+      let start = parseFloat(getTime(v, true, true).value);
+      start += getTime(v, true, false).value === "00" ? 0 : 0.5;
+      let end = parseFloat(getTime(v, false, true).value);
+      end += getTime(v, false, false).value === "00" ? 0 : 0.5;
+
+      const newSubjectBuildingSelect = v.getElementsByClassName(
+        "place_select__building"
+      )[0];
+      const newSubjectBuilding =
+        newSubjectBuildingSelect.options[newSubjectBuildingSelect.selectedIndex]
+          .value;
+
+      const newSubjectPlace = v.getElementsByClassName("place")[0].value;
+      const place = newSubjectBuilding + newSubjectPlace;
+      this.setState({
+        day: checkedDay,
+        name: newSubjectName,
+        place: place,
+        start_time: start,
+        end_time: end,
+      });
+    }
+  };
+
   let count = 0;
   this.render = () => {
     $form.innerHTML = `
@@ -189,7 +226,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       type: "confirm",
       onClick: () => {
         if (!inputValidation()) return;
-
+        getInput();
         // state에 추가하기
         onSubmit(this.state);
       },
