@@ -136,6 +136,8 @@ export default function App({ $target }) {
   const scheduleModal = new ScheduleModal({
     $target,
     initialState: this.state.schedule,
-    onSubmit: (state) => {},
+    onSubmit: (state) => {
+      console.log(state);
+    },
   });
 }

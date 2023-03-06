@@ -15,27 +15,27 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
   };
 
   const placeCoordinate = {
-    "공대 1호관": [36.367604, 127.344857],
-    "공대 2호관": [36.3643, 127.3463],
-    "공대 3호관": [36.3652, 127.3466],
-    "공대 4호관": [36.3649, 127.3474],
-    "공대 5호관": [36.36649, 127.344484],
+    공대1호관: [36.367604, 127.344857],
+    공대2호관: [36.3643, 127.3463],
+    공대3호관: [36.3652, 127.3466],
+    공대4호관: [36.3649, 127.3474],
+    공대5호관: [36.36649, 127.344484],
     사회과학대학: [36.3664, 127.3422],
     교양관: [36.3679, 127.3406],
     인문대학: [36.3683, 127.342],
     사범대학: [36.3684, 127.3404],
-    "자연과학대학 1호관": [36.3694, 127.3436],
-    "자연과학대학 2호관": [36.3698, 127.3432],
-    "자연과학대학 3호관": [36.3663, 127.34],
-    "자연과학대학 4호관": [36.3669, 127.3401],
+    자연과학대학1호관: [36.3694, 127.3436],
+    자연과학대학2호관: [36.3698, 127.3432],
+    자연과학대학3호관: [36.3663, 127.34],
+    자연과학대학4호관: [36.3669, 127.3401],
     경상대학: [36.3675, 127.3461],
     약학대학: [36.369, 127.3432],
     예술대학: [36.371, 127.3438],
     생활과학대학: [36.3763, 127.3432],
     생명시스템과학대학: [36.3759, 127.3438],
-    "농업생명과학대학 1호관": [36.3696, 127.352],
-    "농업생명과학대학 2호관": [36.3704, 127.3529],
-    "농업생명과학대학 3호관": [36.3703, 127.3518],
+    농업생명과학대학1호관: [36.3696, 127.352],
+    농업생명과학대학2호관: [36.3704, 127.3529],
+    농업생명과학대학3호관: [36.3703, 127.3518],
     법과대학: [36.3767, 127.345],
     "테니스장(종합)": [36.3747, 127.3434],
     "테니스장(체육관앞)": [36.3713, 127.3425],
@@ -47,7 +47,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
   };
 
   const place = () => {
-    let retVal = "";
+    let retVal = "<option value=default>===강의실 건물===</option>";
     for (const place in placeCoordinate) {
       retVal += `<option value=${place}>${place}</option>`;
     }
@@ -58,21 +58,21 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     $dialog.showModal();
   };
 
-  const getTime = (target, isStart, isHour, idx) => {
+  const getTime = (target, isStart, isHour) => {
     return target.querySelector(
-      `#time_select__${isStart ? "start" : "end"}_${
+      `.time_select__${isStart ? "start" : "end"}_${
         isHour ? "hour" : "minutes"
-      }__${idx}`
+      }`
     );
   };
 
-  const timeValidation = (target, isStart, idx) => {
-    const checkedDay = target.querySelector(
-      `input[name="day_select__radio${idx}"]:checked`
-    ).className;
+  const timeValidation = (target, isStart, times) => {
+    const checkedDay = Array.from(target.getElementsByClassName("day")).filter(
+      (it) => it.checked === true
+    )[0].classList[1];
 
-    const hour = getTime(target, isStart, true, idx).value;
-    const min = getTime(target, isStart, false, idx).value;
+    const hour = getTime(target, isStart, true).value;
+    const min = getTime(target, isStart, false).value;
 
     const start = parseFloat(hour) + (min === "00" ? 0 : 0.5);
     for (const cur of this.state[checkedDay]) {
@@ -81,7 +81,21 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       for (let i = validate_startTime; i < validate_endTime; i += 0.5) {
         if (i === start) {
           alert("겹치는 시간이 존재합니다");
-          getTime(target, isStart, true, idx).focus();
+          getTime(target, isStart, true).focus();
+          return false;
+        }
+      }
+    }
+
+    for (const cur of times) {
+      const validate_day = cur[0];
+      const validate_startTime = cur[1];
+      const validate_endTime = cur[2];
+      if (checkedDay !== validate_day) continue;
+      for (let i = validate_startTime; i < validate_endTime; i += 0.5) {
+        if (i === start) {
+          alert("위에서 작성한 시간표와 겹치는 시간이 존재합니다.");
+          getTime(target, isStart, true).focus();
           return false;
         }
       }
@@ -95,36 +109,56 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     if (newSubjectName.value === "") {
       alert("과목명을 입력해주세요.");
       newSubjectName.focus();
-      return;
+      return false;
     }
     const subjectUnits = document.getElementsByClassName("timeAndPlace");
-    let idx = 0;
+    const times = [];
+
     for (const v of Array.from(subjectUnits)) {
-      let start = parseFloat(getTime(v, true, true, idx + 1).value);
-      start += getTime(v, true, false, idx + 1).value === "00" ? 0 : 0.5;
-      let end = parseFloat(getTime(v, false, true, idx + 1).value);
-      end += getTime(v, false, false, idx + 1).value === "00" ? 0 : 0.5;
+      let start = parseFloat(getTime(v, true, true).value);
+      start += getTime(v, true, false).value === "00" ? 0 : 0.5;
+      let end = parseFloat(getTime(v, false, true).value);
+      end += getTime(v, false, false).value === "00" ? 0 : 0.5;
 
       //시간 범위 체크
       if (start >= end) {
         alert("올바르지 않은 시간 범위 입력입니다.");
-        getTime(v, false, true, idx + 1).focus();
-        return;
+        getTime(v, false, true).focus();
+        return false;
       }
 
       //겹치는 시간 체크
-      if (!timeValidation(v, true, idx + 1)) return;
-      if (!timeValidation(v, false, idx + 1)) return;
+      if (!timeValidation(v, true, times)) return false;
+      if (!timeValidation(v, false, times)) return false;
+
+      //강의 건물 체크
+      const newSubjectBuildingSelect = v.getElementsByClassName(
+        "place_select__building"
+      )[0];
+      const newSubjectBuilding =
+        newSubjectBuildingSelect.options[newSubjectBuildingSelect.selectedIndex]
+          .value;
+      if (newSubjectBuilding === "default") {
+        alert("강의 건물을 선택해주세요.");
+        newSubjectBuildingSelect.focus();
+        return;
+      }
 
       //강의실 체크
-      const newSubjectPlace = document.getElementById(`place${idx + 1}`);
+      const newSubjectPlace = v.getElementsByClassName("place")[0];
       if (newSubjectPlace.value === "") {
         alert("강의실을 입력해주세요.");
         newSubjectPlace.focus();
-        return;
+        return false;
       }
-      idx++;
+
+      const checkedDay = Array.from(v.getElementsByClassName("day")).filter(
+        (it) => it.checked === true
+      )[0].classList[1];
+      times.push([checkedDay, start, end]);
     }
+
+    return true;
   };
 
   let count = 0;
@@ -154,7 +188,9 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       text: "완료",
       type: "confirm",
       onClick: () => {
-        inputValidation();
+        if (!inputValidation()) return;
+
+        // state에 추가하기
         onSubmit(this.state);
       },
     });
