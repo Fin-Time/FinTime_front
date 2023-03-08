@@ -125,10 +125,8 @@ export default function App({ $target }) {
           }
         });
       }
-
       this.setState({
-        ...this.state,
-        schedule: changedSchedule,
+        ...changedSchedule,
       });
     },
   });
