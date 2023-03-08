@@ -198,6 +198,32 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     }
   };
 
+  const clearInput = () => {
+    document.getElementById("newSubject").value = "";
+    const subjectUnits = document.getElementsByClassName("timeAndPlace");
+    while (subjectUnits[0].nextSibling !== null) {
+      subjectUnits[0].parentNode.removeChild(subjectUnits[0].nextSibling);
+    }
+    subjectUnits[0].getElementsByClassName("monday")[0].checked = true;
+    subjectUnits[0].getElementsByClassName(
+      "time_select__start_hour"
+    )[0].options[0].selected = true;
+    subjectUnits[0].getElementsByClassName(
+      "time_select__start_minutes"
+    )[0].options[0].selected = true;
+    subjectUnits[0].getElementsByClassName(
+      "time_select__end_hour"
+    )[0].options[1].selected = true;
+    subjectUnits[0].getElementsByClassName(
+      "time_select__end_minutes"
+    )[0].options[0].selected = true;
+    subjectUnits[0].getElementsByClassName(
+      "place_select__building"
+    )[0].options[0].selected = true;
+
+    subjectUnits[0].getElementsByClassName("place")[0].value = "";
+  };
+
   let count = 0;
   this.render = () => {
     $form.innerHTML = `
@@ -216,6 +242,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       text: "취소",
       type: "cancel",
       onClick: () => {
+        clearInput();
         $dialog.close();
       },
     });
@@ -227,7 +254,8 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       onClick: () => {
         if (!inputValidation()) return;
         getInput();
-        // state에 추가하기
+        clearInput();
+        $dialog.close();
         onSubmit(this.state);
       },
     });
