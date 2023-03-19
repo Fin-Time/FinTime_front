@@ -52,7 +52,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
   };
 
   const place = () => {
-    let retVal = "<option value=default>===강의실 건물===</option>";
+    let retVal = "<option value=default hidden>===강의실 건물===</option>";
     for (const place in placeCoordinate) {
       retVal += `<option value=${place}>${place}</option>`;
     }
