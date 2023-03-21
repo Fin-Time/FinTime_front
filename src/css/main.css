@@ -2,6 +2,7 @@
 
 @import "scheduler.css";
 @import "scheduleModal.css";
+@import "buttons.css";
 
 * {
   font-family: "Noto Sans KR", sans-serif;
