@@ -227,15 +227,30 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
   let count = 0;
   this.render = () => {
     $form.innerHTML = `
-      <h3>시간표 수업 추가</h3>
-      <label for="newSubject">과목명</label>
-      <input
-        type="text"
-        placeholder="ex) 기초글쓰기"
-        id="newSubject"
-        required
-      />
+      <h3 id="scheduleModal__header">시간표 수업 추가</h3>
+      <span id="scheduleModal__subject_name">
+        <label for="newSubject">과목명</label>
+        <input
+          type="text"
+          placeholder="ex) 기초글쓰기"
+          id="newSubject"
+          required
+        />
+      </span>
     `;
+
+    new Button({
+      $target: $form,
+      text: "+ 시간/장소 추가",
+      type: "add",
+      onClick: () => {
+        new TimePlaceSelector({
+          $target: $form,
+          number: ++count,
+          place,
+        });
+      },
+    });
 
     new Button({
       $target: $form,
@@ -257,19 +272,6 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
         clearInput();
         $dialog.close();
         onSubmit(this.state);
-      },
-    });
-
-    new Button({
-      $target: $form,
-      text: "+ 시간/장소 추가",
-      type: "add",
-      onClick: () => {
-        new TimePlaceSelector({
-          $target: $form,
-          number: ++count,
-          place,
-        });
       },
     });
 

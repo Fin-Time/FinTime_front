@@ -16,12 +16,16 @@ export default function TimePlaceSelector({ $target, number, place }) {
 
   this.render = () => {
     $div.innerHTML = `
+          <div class="time_place__title">
+            ${number === 1 ? "시간 / 장소" : ""}
+          </div>
+          <div class="time_place__content">
             <div class="day_select">
-              <label><input type="radio" name="day_select__radio${number}" class="day monday" checked/>월</label>
-              <label><input type="radio" name="day_select__radio${number}" class="day tuesday"/>화</label>
-              <label><input type="radio" name="day_select__radio${number}" class="day wednesday"/>수</label>
-              <label><input type="radio" name="day_select__radio${number}" class="day thursday"/>목</label>
-              <label><input type="radio" name="day_select__radio${number}" class="day friday"/>금</label>
+              <input type="radio" name="day_select__radio${number}" id="mon_${number}" class="day monday" checked/><label for="mon_${number}" class="day_label">월</label>
+              <input type="radio" name="day_select__radio${number}" id="tue_${number}" class="day tuesday"/><label for="tue_${number}" class="day_label">화</label>
+              <input type="radio" name="day_select__radio${number}" id="wed_${number}" class="day wednesday"/><label for="wed_${number}" class="day_label">수</label>
+              <input type="radio" name="day_select__radio${number}" id="thu_${number}" class="day thursday"/><label for="thu_${number}" class="day_label">목</label>
+              <input type="radio" name="day_select__radio${number}" id="fri_${number}" class="day friday"/><label for="fri_${number}" class="day_label">금</label>
             </div>
             <div class="time_select">
               <select class="time_select__start_hour">
@@ -52,6 +56,7 @@ export default function TimePlaceSelector({ $target, number, place }) {
                 ? `<button type="button" class="select_cell_delete_btn">삭제</button>`
                 : ""
             }
+          </div>
     `;
   };
 

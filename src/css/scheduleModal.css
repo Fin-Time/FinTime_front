@@ -1,0 +1,64 @@
+dialog {
+  width: 800px;
+  padding: 25px;
+  border-radius: 30px;
+}
+dialog::backdrop {
+  background-color: black;
+  opacity: 0.5;
+}
+
+dialog h3 {
+  margin: 0px;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+#scheduleModal__subject_name #newSubject {
+  width: 250px;
+}
+
+.day_select {
+  padding: 10px 5px;
+}
+
+.day {
+  display: none;
+}
+
+.day_select label {
+  display: inline-block;
+  cursor: pointer;
+  height: 25px;
+  width: 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 5px;
+  line-height: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.day_select label {
+  background-color: #fff;
+  color: #333;
+}
+
+.day_select input[type="radio"]:checked + label {
+  background-color: #9bcb3c;
+  color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+#scheduleModal__subject_name label {
+  margin-right: 40px;
+}
+
+.timeAndPlace {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.time_place__title {
+  width: 90px;
+}
