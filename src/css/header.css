@@ -1,0 +1,33 @@
+#header {
+  padding: 10px 100px;
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.same-size {
+  width: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#header__anchors {
+  justify-content: flex-start;
+}
+
+#header__anchors a {
+  margin: 0 20px;
+}
+
+#header__logo img {
+  width: 200px;
+}
+
+#header__user {
+  justify-content: flex-end;
+}
+
+#header__user__name,
+#logout {
+  margin: 0 20px;
+}
