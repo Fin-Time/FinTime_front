@@ -1,3 +1,4 @@
+import Header from "./components/Header.js";
 import SchedulerPage from "./pages/SchedulerPage.js";
 
 const DUMMY_DATA = {
@@ -92,5 +93,6 @@ const DUMMY_DATA = {
 };
 
 export default function App({ $target }) {
+  new Header({ $target });
   new SchedulerPage({ $target, initialState: DUMMY_DATA });
 }
