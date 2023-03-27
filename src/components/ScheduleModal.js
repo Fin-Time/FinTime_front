@@ -78,7 +78,6 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
 
     const hour = getTime(target, isStart, true).value;
     const min = getTime(target, isStart, false).value;
-
     const start = parseFloat(hour) + (min === "00" ? 0 : 0.5);
     for (const cur of this.state[checkedDay]) {
       const validate_startTime = parseFloat(cur["start_time"]);

@@ -1,5 +1,7 @@
 import Header from "./components/Header.js";
 import SchedulerPage from "./pages/SchedulerPage.js";
+import { getItem } from "./utils/storage.js";
+import { config } from "./Keys.js";
 
 const DUMMY_DATA = {
   monday: [
@@ -94,5 +96,14 @@ const DUMMY_DATA = {
 
 export default function App({ $target }) {
   new Header({ $target });
-  new SchedulerPage({ $target, initialState: DUMMY_DATA });
+  new SchedulerPage({
+    $target,
+    initialState: getItem(config.STORAGE_KEY, {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+    }),
+  });
 }
