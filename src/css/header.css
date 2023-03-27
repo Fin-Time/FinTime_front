@@ -3,32 +3,25 @@
   display: flex;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   margin-bottom: 50px;
+  align-items: center;
+  justify-content: center;
 }
 
 .same-size {
-  width: 33%;
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#header__anchors {
+#header__logo {
   justify-content: flex-start;
 }
 
-#header__anchors a {
-  margin: 0 20px;
+#header__anchors {
+  justify-content: space-evenly;
 }
 
 #header__logo img {
   width: 200px;
-}
-
-#header__user {
-  justify-content: flex-end;
-}
-
-#header__user__name,
-#logout {
-  margin: 0 20px;
 }
