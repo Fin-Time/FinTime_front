@@ -4,6 +4,10 @@ import Scheduler from "../components/Scheduler.js";
 import { setItem } from "../utils/storage.js";
 import { config } from "../Keys.js";
 
+/* initialState : {
+  schedule: {},
+  subjectName: []
+} */
 export default function SchedulerPage({ $target, initialState }) {
   this.state = initialState;
   this.setState = (nextState) => {
@@ -26,16 +30,19 @@ export default function SchedulerPage({ $target, initialState }) {
     initialState: this.state,
     onDelete: (name) => {
       if (!confirm(`${name} 과목을 삭제하시겠습니까?`)) return;
-      const changedSchedule = { ...this.state };
+      const changedSchedule = { ...this.state.schedule };
+      const changedSubjectName = this.state.subjectName;
       for (const key in changedSchedule) {
         changedSchedule[key].forEach((cur, idx) => {
           if (cur.name === name) {
             changedSchedule[key].splice(idx, 1);
+            changedSubjectName.splice(idx, 1);
           }
         });
       }
       this.setState({
-        ...changedSchedule,
+        schedule: changedSchedule,
+        subjectName: changedSubjectName,
       });
     },
   });

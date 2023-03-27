@@ -11,12 +11,13 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
 
   this.state = initialState;
   this.setState = ({ day, name, place, start_time, end_time }) => {
-    this.state[day].push({
+    this.state.schedule[day].push({
       name,
       place,
       start_time,
       end_time,
     });
+    this.state.subjectNames.push(name);
   };
 
   const placeCoordinate = {
@@ -79,7 +80,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     const hour = getTime(target, isStart, true).value;
     const min = getTime(target, isStart, false).value;
     const start = parseFloat(hour) + (min === "00" ? 0 : 0.5);
-    for (const cur of this.state[checkedDay]) {
+    for (const cur of this.state.schedule[checkedDay]) {
       const validate_startTime = parseFloat(cur["start_time"]);
       const validate_endTime = parseFloat(cur["end_time"]);
       for (let i = validate_startTime; i < validate_endTime; i += 0.5) {

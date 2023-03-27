@@ -102,8 +102,8 @@ export default function Scheduler({ $target, initialState, onDelete }) {
         </tr>
       `;
     const subjects = [];
-    for (const key in this.state) {
-      this.state[key].map(({ name, place, start_time, end_time }) => {
+    for (const key in this.state.schedule) {
+      this.state.schedule[key].map(({ name, place, start_time, end_time }) => {
         let current;
         switch (key) {
           case "monday":
