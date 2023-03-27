@@ -1,4 +1,4 @@
-const storage = window.sessionStorage;
+const storage = window.localStorage;
 
 export const getItem = (key, defaultValue) => {
   try {
