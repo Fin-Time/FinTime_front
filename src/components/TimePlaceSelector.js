@@ -76,7 +76,7 @@ export default function TimePlaceSelector({ $target, number }) {
                 : ""
             }
           </div>
-          <div id="map_mark_${number}"></div>
+          <div id="map_mark_${number}" class="maps"></div>
     `;
   };
 

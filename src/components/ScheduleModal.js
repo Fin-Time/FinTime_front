@@ -190,6 +190,12 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     subjectUnits[0].getElementsByClassName("place")[0].value = "";
   };
 
+  const removeMap = () => {
+    const map = document.getElementById("map_mark_1");
+    if (map === undefined) return;
+    map.removeChild(map.firstChild);
+  };
+
   let count = 0;
   this.render = () => {
     $form.innerHTML = `
@@ -223,6 +229,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       type: "cancel",
       onClick: () => {
         clearInput();
+        removeMap();
         $dialog.close();
       },
     });
@@ -236,6 +243,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
         getInput();
         clearInput();
         $dialog.close();
+        removeMap();
         onSubmit(this.state);
       },
     });
