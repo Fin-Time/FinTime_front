@@ -192,7 +192,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
 
   const removeMap = () => {
     const map = document.getElementById("map_mark_1");
-    if (map === undefined) return;
+    if (map === undefined || map.firstChild === null) return;
     map.removeChild(map.firstChild);
   };
 
