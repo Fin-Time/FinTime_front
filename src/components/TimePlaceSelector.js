@@ -1,9 +1,12 @@
-export default function TimePlaceSelector({ $target, number, place }) {
+import { placeCoordinate } from "../utils/buildingCoords.js";
+import { markMap } from "../utils/tmap.js";
+
+export default function TimePlaceSelector({ $target, number }) {
   const $div = document.createElement("div");
   $div.setAttribute("class", `timeAndPlace`);
   $target.appendChild($div);
 
-  const hourList = (def, isStart) => {
+  const hourList = (def, isStart = false) => {
     let retVal = "";
     for (let i = 9; i < 21; i++) {
       if (isStart && i === 20) break;
@@ -12,6 +15,21 @@ export default function TimePlaceSelector({ $target, number, place }) {
       }>${i}</option>`;
     }
     return retVal;
+  };
+
+  const place = () => {
+    let retVal = "<option value=default hidden>===강의실 건물===</option>";
+    for (const place in placeCoordinate) {
+      retVal += `<option value=${place}>${place}</option>`;
+    }
+    return retVal;
+  };
+
+  const removeAll = (id) => {
+    const parent = document.getElementById(id);
+    while (parent.hasChildNodes()) {
+      parent.removeChild(parent.firstChild);
+    }
   };
 
   this.render = () => {
@@ -47,6 +65,7 @@ export default function TimePlaceSelector({ $target, number, place }) {
             <div class="place_select">
               <select name="place_choose" class="place_select__building">
                 ${place()}
+                
               </select>
               <input type="text" placeholder="강의실 [ ex) 410 ]" class='place' required/>
             </div>
@@ -57,6 +76,7 @@ export default function TimePlaceSelector({ $target, number, place }) {
                 : ""
             }
           </div>
+          <div id="map_mark_${number}"></div>
     `;
   };
 
@@ -67,6 +87,16 @@ export default function TimePlaceSelector({ $target, number, place }) {
     if (!$changeStartSelect) return;
     const $changeEndSelect = $changeStartSelect.parentNode.children[3];
     $changeEndSelect.value = parseInt($changeStartSelect.value) + 1;
+  });
+
+  $div.addEventListener("change", (e) => {
+    const $changeBuilding = e.target.closest(".place_select__building");
+    if (!$changeBuilding) return;
+    const coords = placeCoordinate[$changeBuilding.value];
+    const targetMap =
+      $changeBuilding.parentNode.parentNode.parentNode.children[2].id;
+    removeAll(targetMap);
+    markMap(targetMap, coords[0], coords[1], "400px", "250px");
   });
 
   $div.addEventListener("click", (e) => {
