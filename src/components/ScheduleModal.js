@@ -20,46 +20,6 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     this.state.subjectNames.push(name);
   };
 
-  const placeCoordinate = {
-    공대1호관: [36.367604, 127.344857],
-    공대2호관: [36.3643, 127.3463],
-    공대3호관: [36.3652, 127.3466],
-    공대4호관: [36.3649, 127.3474],
-    공대5호관: [36.36649, 127.344484],
-    사회과학대학: [36.3664, 127.3422],
-    교양관: [36.3679, 127.3406],
-    인문대학: [36.3683, 127.342],
-    사범대학: [36.3684, 127.3404],
-    자연과학대학1호관: [36.3694, 127.3436],
-    자연과학대학2호관: [36.3698, 127.3432],
-    자연과학대학3호관: [36.3663, 127.34],
-    자연과학대학4호관: [36.3669, 127.3401],
-    경상대학: [36.3675, 127.3461],
-    약학대학: [36.369, 127.3432],
-    예술대학: [36.371, 127.3438],
-    생활과학대학: [36.3763, 127.3432],
-    생명시스템과학대학: [36.3759, 127.3438],
-    농업생명과학대학1호관: [36.3696, 127.352],
-    농업생명과학대학2호관: [36.3704, 127.3529],
-    농업생명과학대학3호관: [36.3703, 127.3518],
-    법과대학: [36.3767, 127.345],
-    "테니스장(종합)": [36.3747, 127.3434],
-    "테니스장(체육관앞)": [36.3713, 127.3425],
-    음악1호관: [36.3731, 127.3441],
-    음악2호관: [36.3739, 127.3442],
-    종합운동장: [36.3731, 127.3426],
-    실내체육관: [36.3716, 127.3416],
-    골프연습장: [36.3716, 127.3483],
-  };
-
-  const place = () => {
-    let retVal = "<option value=default hidden>===강의실 건물===</option>";
-    for (const place in placeCoordinate) {
-      retVal += `<option value=${place}>${place}</option>`;
-    }
-    return retVal;
-  };
-
   this.open = () => {
     $dialog.showModal();
   };
@@ -253,7 +213,6 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
         new TimePlaceSelector({
           $target: $form,
           number: ++count,
-          place,
         });
       },
     });
@@ -284,7 +243,6 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     new TimePlaceSelector({
       $target: $form,
       number: ++count,
-      place,
     });
   };
 
