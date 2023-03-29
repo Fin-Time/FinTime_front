@@ -6,7 +6,7 @@ import { config } from "../Keys.js";
 
 /* initialState : {
   schedule: {},
-  subjectName: []
+  subjectNames: []
 } */
 export default function SchedulerPage({ $target, initialState }) {
   this.state = initialState;
@@ -31,18 +31,18 @@ export default function SchedulerPage({ $target, initialState }) {
     onDelete: (name) => {
       if (!confirm(`${name} 과목을 삭제하시겠습니까?`)) return;
       const changedSchedule = { ...this.state.schedule };
-      const changedSubjectName = this.state.subjectName;
+      let changedSubjectName = this.state.subjectNames;
       for (const key in changedSchedule) {
         changedSchedule[key].forEach((cur, idx) => {
           if (cur.name === name) {
             changedSchedule[key].splice(idx, 1);
-            changedSubjectName.splice(idx, 1);
+            changedSubjectName = changedSubjectName.filter((v) => v !== name);
           }
         });
       }
       this.setState({
         schedule: changedSchedule,
-        subjectName: changedSubjectName,
+        subjectNames: changedSubjectName,
       });
     },
   });
