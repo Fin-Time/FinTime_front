@@ -94,7 +94,7 @@ const DUMMY_DATA = {
   ],
 };
 
-const schedule = getItem(config.STORAGE_KEY, {
+const state = getItem(config.STORAGE_KEY, {
   monday: [],
   tuesday: [],
   wednesday: [],
@@ -103,8 +103,8 @@ const schedule = getItem(config.STORAGE_KEY, {
 });
 const getSubjectNames = () => {
   const names = [];
-  for (const day in schedule) {
-    for (const subject of schedule[day]) {
+  for (const day in state.schedule) {
+    for (const subject of state.schedule[day]) {
       names.push(subject.name);
     }
   }
@@ -116,7 +116,13 @@ export default function App({ $target }) {
   new SchedulerPage({
     $target,
     initialState: {
-      schedule: schedule,
+      schedule: state.schedule || {
+        monday: [],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: [],
+      },
       subjectNames: getSubjectNames(),
     },
   });

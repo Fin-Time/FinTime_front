@@ -116,6 +116,12 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       newSubjectName.focus();
       return false;
     }
+    if (this.state.subjectNames.includes(newSubjectName.value)) {
+      alert("이미 존재하는 과목입니다.");
+      newSubjectName.focus();
+      return false;
+    }
+
     const subjectUnits = document.getElementsByClassName("timeAndPlace");
     const times = [];
 
