@@ -26,22 +26,27 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
     );
   };
 
-  const timeValidation = (target, isStart, times) => {
+  const timeValidation = (target, times) => {
     const checkedDay = Array.from(target.getElementsByClassName("day")).filter(
       (it) => it.checked === true
     )[0].classList[1];
 
-    const hour = getTime(target, isStart, true).value;
-    const min = getTime(target, isStart, false).value;
-    const start = parseFloat(hour) + (min === "00" ? 0 : 0.5);
+    const startHour = getTime(target, true, true).value;
+    const startMin = getTime(target, true, false).value;
+    const start = parseFloat(startHour) + (startMin === "00" ? 0 : 0.5);
+    const endHour = getTime(target, false, true).value;
+    const endMin = getTime(target, false, false).value;
+    const end = parseFloat(endHour) + (endMin === "00" ? 0 : 0.5);
     for (const cur of this.state.schedule[checkedDay]) {
       const validate_startTime = parseFloat(cur["start_time"]);
       const validate_endTime = parseFloat(cur["end_time"]);
       for (let i = validate_startTime; i < validate_endTime; i += 0.5) {
-        if (i === start) {
-          alert("겹치는 시간이 존재합니다");
-          getTime(target, isStart, true).focus();
-          return false;
+        for (let j = start; j < end; j += 0.5) {
+          if (i === j) {
+            alert("겹치는 시간이 존재합니다");
+            getTime(target, true, true).focus();
+            return false;
+          }
         }
       }
     }
@@ -93,8 +98,7 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       }
 
       //겹치는 시간 체크
-      if (!timeValidation(v, true, times)) return false;
-      if (!timeValidation(v, false, times)) return false;
+      if (!timeValidation(v, times)) return false;
 
       //강의 건물 체크
       const newSubjectBuildingSelect = v.getElementsByClassName(
