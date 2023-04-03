@@ -44,6 +44,7 @@ export default function SchedulerPage({ $target, initialState }) {
         schedule: changedSchedule,
         subjectNames: changedSubjectName,
       });
+      scheduleModal.setState(this.state);
     },
   });
 

@@ -4,20 +4,14 @@ import TimePlaceSelector from "./TimePlaceSelector.js";
 export default function ScheduleModal({ $target, initialState, onSubmit }) {
   const $dialog = document.createElement("dialog");
   $target.appendChild($dialog);
-
   const $form = document.createElement("form");
   $form.setAttribute("method", "dialog");
   $dialog.appendChild($form);
 
   this.state = initialState;
-  this.setState = ({ day, name, place, start_time, end_time }) => {
-    this.state.schedule[day].push({
-      name,
-      place,
-      start_time,
-      end_time,
-    });
-    this.state.subjectNames.push(name);
+
+  this.setState = (nextState) => {
+    this.state = nextState;
   };
 
   this.open = () => {
@@ -155,11 +149,19 @@ export default function ScheduleModal({ $target, initialState, onSubmit }) {
       const newSubjectPlace = v.getElementsByClassName("place")[0].value;
       const place = newSubjectBuilding + newSubjectPlace;
       this.setState({
-        day: checkedDay,
-        name: newSubjectName,
-        place: place,
-        start_time: start,
-        end_time: end,
+        schedule: {
+          ...this.state.schedule,
+          [checkedDay]: [
+            ...this.state.schedule[checkedDay],
+            {
+              name: newSubjectName,
+              place: place,
+              start_time: start,
+              end_time: end,
+            },
+          ],
+        },
+        subjectNames: [...this.state.subjectNames, newSubjectName],
       });
     }
   };
